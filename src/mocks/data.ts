@@ -1,10 +1,11 @@
-import { OrderInfo, UserInfo, StatisticsData } from '../types';
+import type { OrderInfo, UserInfo, StatisticsData } from '../types';
 import {
   CATEGORIES,
   CITIES,
   PAYMENT_METHODS,
   PAYMENT_STATUS,
 } from '../constants';
+import { multiply, subtract, sum, calculateProfit } from '../utils/decimal';
 
 // 生成随机数字
 const randomInt = (min: number, max: number) =>
@@ -107,12 +108,12 @@ export const generateMockOrders = (count: number = 100): OrderInfo[] => {
   for (let i = 1; i <= count; i++) {
     const weight = randomInt(100, 5000);
     const unitPrice = Number((Math.random() * 10 + 1).toFixed(2));
-    const totalRevenue = weight * unitPrice;
+    const totalRevenue = multiply(weight, unitPrice);
     const driverWage = randomInt(300, 1500);
     const loadingFee = randomInt(100, 800);
-    const expectedExpense = driverWage + loadingFee + randomInt(200, 1000);
-    const actualExpense = expectedExpense + randomInt(-200, 300);
-    const dailyProfit = totalRevenue - actualExpense;
+    const expectedExpense = sum([driverWage, loadingFee, randomInt(200, 1000)]);
+    const actualExpense = sum([expectedExpense, randomInt(-200, 300)]);
+    const dailyProfit = subtract(totalRevenue, actualExpense);
 
     const createdAt = randomDate(oneYearAgo, now);
     const paymentTime = Math.random() > 0.3 ? randomDate(createdAt, now) : null;
@@ -197,19 +198,10 @@ export const calculateStatistics = (orders: OrderInfo[]): StatisticsData => {
   );
 
   return {
-    dailyProfit: dailyOrders.reduce((sum, order) => sum + order.dailyProfit, 0),
-    weeklyProfit: weeklyOrders.reduce(
-      (sum, order) => sum + order.dailyProfit,
-      0
-    ),
-    monthlyProfit: monthlyOrders.reduce(
-      (sum, order) => sum + order.dailyProfit,
-      0
-    ),
-    yearlyProfit: yearlyOrders.reduce(
-      (sum, order) => sum + order.dailyProfit,
-      0
-    ),
+    dailyProfit: sum(dailyOrders.map((order) => order.dailyProfit)),
+    weeklyProfit: sum(weeklyOrders.map((order) => order.dailyProfit)),
+    monthlyProfit: sum(monthlyOrders.map((order) => order.dailyProfit)),
+    yearlyProfit: sum(yearlyOrders.map((order) => order.dailyProfit)),
     totalOrders: orders.length,
     completedOrders: completedOrders.length,
     pendingOrders: pendingOrders.length,

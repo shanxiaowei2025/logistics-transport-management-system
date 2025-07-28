@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import {
+import type {
   OrderInfo,
   StatisticsData,
   PaginationParams,
@@ -15,7 +15,7 @@ export const useOrders = (
   pagination?: PaginationParams,
   filters?: OrderFilters
 ) => {
-  const key = `orders|${JSON.stringify(pagination)}|${JSON.stringify(filters)}`;
+  const key = `orders|${JSON.stringify(pagination || {})}|${filters ? JSON.stringify(filters) : ''}`;
 
   const { data, error, isLoading, mutate } = useSWR<
     ApiResponse<PaginatedResponse<OrderInfo>>

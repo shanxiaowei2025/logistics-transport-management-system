@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { LoginForm } from '../../components/Forms/LoginForm';
 import { useAuthStore } from '../../stores';
 import { ROUTES } from '../../constants';
-import { LoginCredentials } from '../../types';
+import type { LoginCredentials } from '../../types';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

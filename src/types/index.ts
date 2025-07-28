@@ -5,17 +5,19 @@ export interface OrderInfo {
   unitPrice: number; // 单价（斤）
   plateNumber: string; // 车牌号
   driver: string; // 驾驶员
-  phone: string; // 电话
-  paymentTime: Date | null; // 何时付款
+  phone?: string; // 电话（可选）
+  customerPhone?: string; // 客户电话
+  paymentTime?: Date | null; // 何时付款
   origin: string; // 出发地
   destination: string; // 目的地
   paymentStatus: 'pending' | 'verified' | 'collected'; // 收款情况
   paymentMethod: string; // 收款方式
-  driverWage: number; // 人员工资
-  loadingFee: number; // 装卸费
-  expectedExpense: number; // 应支出
-  actualExpense: number; // 实际支出
+  driverWage?: number; // 人员工资
+  loadingFee?: number; // 装卸费
+  expectedExpense?: number; // 应支出
+  actualExpense?: number; // 实际支出
   dailyProfit: number; // 当天利润
+  remarks?: string; // 备注
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,6 +54,7 @@ export interface OrderFilters {
   };
   origin?: string;
   destination?: string;
+  search?: string; // 搜索关键词
 }
 
 export interface ApiResponse<T> {

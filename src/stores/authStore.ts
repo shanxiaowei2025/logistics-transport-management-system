@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { UserInfo, LoginCredentials } from '../types';
+import type { UserInfo, LoginCredentials } from '../types';
 import { mockApi } from '../mocks/api';
 
 interface AuthState {

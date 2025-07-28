@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { OrderInfo, OrderFilters, PaginationParams } from '../types';
+import type { OrderInfo, OrderFilters, PaginationParams } from '../types';
 import { mockApi } from '../mocks/api';
 import { DEFAULT_PAGE_SIZE } from '../constants';
 

@@ -12,10 +12,13 @@ export const fetcher = async (key: string) => {
     switch (endpoint) {
       case 'orders': {
         const [pagination, filters] = params;
-        return await mockApi.getOrders(
-          pagination ? JSON.parse(pagination) : { page: 1, pageSize: 10 },
-          filters ? JSON.parse(filters) : undefined
-        );
+        const paginationParam =
+          pagination && pagination !== '{}'
+            ? JSON.parse(pagination)
+            : { page: 1, pageSize: 10 };
+        const filtersParam =
+          filters && filters.trim() !== '' ? JSON.parse(filters) : undefined;
+        return await mockApi.getOrders(paginationParam, filtersParam);
       }
 
       case 'order': {

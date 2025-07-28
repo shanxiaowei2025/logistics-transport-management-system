@@ -1,4 +1,4 @@
-import {
+import type {
   OrderInfo,
   UserInfo,
   StatisticsData,
@@ -9,6 +9,7 @@ import {
   PaginationParams,
 } from '../types';
 import { mockOrders, mockUsers, mockStatistics } from './data';
+import { sum } from '../utils/decimal';
 
 // 模拟API延迟
 const delay = (ms: number = 500) =>
@@ -56,6 +57,18 @@ const filterOrders = (
 
     if (filters.destination && order.destination !== filters.destination) {
       return false;
+    }
+
+    // 搜索功能：搜索订单编号、司机姓名、车牌号
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      const matchesId = order.id.toLowerCase().includes(searchTerm);
+      const matchesDriver = order.driver.toLowerCase().includes(searchTerm);
+      const matchesPlate = order.plateNumber.toLowerCase().includes(searchTerm);
+
+      if (!matchesId && !matchesDriver && !matchesPlate) {
+        return false;
+      }
     }
 
     if (filters.dateRange) {
@@ -259,10 +272,7 @@ export const mockApi = {
 
           data.push({
             date: date.toISOString().split('T')[0],
-            profit: dayOrders.reduce(
-              (sum, order) => sum + order.dailyProfit,
-              0
-            ),
+            profit: sum(dayOrders.map((order) => order.dailyProfit)),
             orders: dayOrders.length,
           });
         }
@@ -284,10 +294,7 @@ export const mockApi = {
 
           data.push({
             week: `第${8 - i}周`,
-            profit: weekOrders.reduce(
-              (sum, order) => sum + order.dailyProfit,
-              0
-            ),
+            profit: sum(weekOrders.map((order) => order.dailyProfit)),
             orders: weekOrders.length,
           });
         }
@@ -309,10 +316,7 @@ export const mockApi = {
 
           data.push({
             month: `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, '0')}`,
-            profit: monthOrders.reduce(
-              (sum, order) => sum + order.dailyProfit,
-              0
-            ),
+            profit: sum(monthOrders.map((order) => order.dailyProfit)),
             orders: monthOrders.length,
           });
         }

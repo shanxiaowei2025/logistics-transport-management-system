@@ -10,6 +10,12 @@ export const PAYMENT_STATUS_LABELS = {
   [PAYMENT_STATUS.COLLECTED]: '已收款',
 };
 
+export const PAYMENT_STATUS_OPTIONS = [
+  { value: 'pending', label: '待付款' },
+  { value: 'verified', label: '已核实' },
+  { value: 'collected', label: '已收款' },
+];
+
 export const USER_ROLES = {
   ADMIN: 'admin' as const,
   OPERATOR: 'operator' as const,
@@ -34,12 +40,12 @@ export const CATEGORIES = [
 ];
 
 export const PAYMENT_METHODS = [
-  '现金',
-  '微信支付',
-  '支付宝',
-  '银行转账',
-  '银行卡',
-  '支票',
+  { value: 'cash', label: '现金' },
+  { value: 'wechat', label: '微信支付' },
+  { value: 'alipay', label: '支付宝' },
+  { value: 'bank_transfer', label: '银行转账' },
+  { value: 'bank_card', label: '银行卡' },
+  { value: 'check', label: '支票' },
 ];
 
 export const CITIES = [

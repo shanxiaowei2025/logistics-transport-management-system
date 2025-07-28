@@ -26,10 +26,6 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to={ROUTES.DASHBOARD} replace />,
-      },
-      {
-        path: ROUTES.DASHBOARD.substring(1), // 移除开头的 '/'
         element: <Dashboard />,
       },
       {

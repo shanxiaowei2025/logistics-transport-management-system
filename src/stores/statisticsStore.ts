@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { StatisticsData } from '../types';
+import type { StatisticsData } from '../types';
 import { mockApi } from '../mocks/api';
 
 interface StatisticsState {
