@@ -29,6 +29,7 @@ import {
 import { PAYMENT_STATUS_LABELS, CATEGORIES, CITIES } from '../../constants';
 import type { OrderInfo, OrderFilters } from '../../types';
 import { OrderForm } from '../../components/Forms/OrderForm';
+import { OrderDetailModal } from '../../components/Order/OrderDetailModal';
 import { formatCurrency } from '../../utils/decimal';
 import dayjs from 'dayjs';
 
@@ -41,10 +42,10 @@ const Orders: React.FC = () => {
   const [filters, setFilters] = useState<OrderFilters>({});
   const [searchText, setSearchText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>(
-    'create'
-  );
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [currentOrder, setCurrentOrder] = useState<OrderInfo | null>(null);
+  const [viewModalVisible, setViewModalVisible] = useState(false);
+  const [viewOrder, setViewOrder] = useState<OrderInfo | null>(null);
 
   const {
     orders,
@@ -180,9 +181,8 @@ const Orders: React.FC = () => {
   ];
 
   const handleView = (order: OrderInfo) => {
-    setCurrentOrder(order);
-    setModalMode('view');
-    setModalVisible(true);
+    setViewOrder(order);
+    setViewModalVisible(true);
   };
 
   const handleEdit = (order: OrderInfo) => {
@@ -228,6 +228,18 @@ const Orders: React.FC = () => {
   const handleModalCancel = () => {
     setModalVisible(false);
     setCurrentOrder(null);
+  };
+
+  const handleViewModalClose = () => {
+    setViewModalVisible(false);
+    setViewOrder(null);
+  };
+
+  const handleEditFromView = (order: OrderInfo) => {
+    setViewModalVisible(false);
+    setCurrentOrder(order);
+    setModalMode('edit');
+    setModalVisible(true);
   };
 
   const handleSearch = () => {
@@ -320,13 +332,7 @@ const Orders: React.FC = () => {
 
       {/* 订单表单弹窗 */}
       <Modal
-        title={
-          modalMode === 'create'
-            ? '新建订单'
-            : modalMode === 'edit'
-              ? '编辑订单'
-              : '查看订单'
-        }
+        title={modalMode === 'create' ? '新建订单' : '编辑订单'}
         open={modalVisible}
         onCancel={handleModalCancel}
         footer={null}
@@ -341,6 +347,14 @@ const Orders: React.FC = () => {
           loading={modalMode === 'create' ? isCreating : isUpdating}
         />
       </Modal>
+
+      {/* 订单详情查看弹窗 */}
+      <OrderDetailModal
+        open={viewModalVisible}
+        order={viewOrder}
+        onClose={handleViewModalClose}
+        onEdit={handleEditFromView}
+      />
     </div>
   );
 };

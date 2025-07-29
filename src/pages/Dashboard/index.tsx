@@ -35,17 +35,18 @@ const Dashboard: React.FC = () => {
     return (
       <div className="p-6 text-center">
         <p className="text-gray-500">暂无统计数据</p>
-        <p className="text-xs text-gray-400 mt-2">statistics: {JSON.stringify(statistics)}</p>
+        <p className="text-xs text-gray-400 mt-2">
+          statistics: {JSON.stringify(statistics)}
+        </p>
         <Button onClick={() => window.location.reload()}>重新加载</Button>
       </div>
     );
   }
 
-
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">仪表盘概览</h2>
-      
+
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} lg={6}>
           <Card>
